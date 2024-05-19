@@ -10,4 +10,10 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SharedModels">
+      <HintPath>..\..\SharedModelsProject\SharedModels\SharedModels\bin\Debug\net6.0\SharedModels.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
