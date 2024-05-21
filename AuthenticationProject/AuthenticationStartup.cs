@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using AuthenticationProject.Repository;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace AuthenticationProject
@@ -26,6 +27,7 @@ namespace AuthenticationProject
             });
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IDbConnection>((sp) => new SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<ILoginRepository, LoginRepository>();
             services.AddControllers();
         }
 
