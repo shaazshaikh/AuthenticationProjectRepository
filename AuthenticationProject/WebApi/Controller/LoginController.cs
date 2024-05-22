@@ -24,7 +24,7 @@ namespace AuthenticationProject.WebApi.Controller
             var user = await _userLoginRepository.AuthenticateUserAsync(model.UserName, model.Password);
             if(user != null)
             {
-                //var token = GenerateToken(user); //Testing purpose
+                //var token = GenerateToken(user); //Testing purpose 2
                 return Ok();
             }
 
