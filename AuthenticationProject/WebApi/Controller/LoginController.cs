@@ -1,4 +1,5 @@
 ﻿using AuthenticationProject.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedModels.AuthenticationModels;
@@ -15,10 +16,20 @@ namespace AuthenticationProject.WebApi.Controller
             _userLoginRepository = userLoginRepository;
         }
 
-        //public IActionResult Login([FromBody] UserLoginModel model)
-        //{
-        //    IActionResult response = Unauthorized();
-        //}
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("authenticateUser")]
+        public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginModel model)
+        {
+            var user = await _userLoginRepository.AuthenticateUserAsync(model.UserName, model.Password);
+            if(user != null)
+            {
+                //var token = GenerateToken(user);
+                return Ok();
+            }
+
+            return Unauthorized();
+        }
 
         [HttpGet]
         [Route("getUsers")]
