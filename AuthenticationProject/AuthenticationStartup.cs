@@ -1,6 +1,9 @@
 ﻿using AuthenticationProject.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace AuthenticationProject
 {
@@ -29,10 +32,26 @@ namespace AuthenticationProject
             services.AddTransient<IDbConnection>((sp) => new SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<ILoginRepository, LoginRepository>();
             services.AddControllers();
+
+            //Jwt Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
+
         }
 
-        //We cannot modify name of this function. It helps in  setting up http request pipeline
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            //We cannot modify name of this function. It helps in  setting up http request pipeline
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             ////uncomment to use swagger
             //app.UseSwagger();
