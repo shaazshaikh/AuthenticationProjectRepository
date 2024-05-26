@@ -20,14 +20,14 @@ namespace AuthenticationProject.Repository
 
         public async Task<IEnumerable<UserLoginModel>> GetUsersAsync()
         {
-            string sql = "SELECT * FROM Users";
+            string sql = "select * from Users";
             return await _dbConnection.QueryAsync<UserLoginModel>(sql);
         }
 
         public async Task<UserLoginModel> AuthenticateUserAsync(string username, string password)
         {
-            string sql = $"SELECT * FROM Users where Username = @Username and Password = @Password";
-            var result = await _dbConnection.QueryFirstOrDefaultAsync<UserLoginModel>(sql, new { Username = username, Password = password });
+            string sql = "select * from Users where username = @username and password = @password";
+            var result = await _dbConnection.QueryFirstOrDefaultAsync<UserLoginModel>(sql, new { username = username, password = password });
             return result;
         }
     }

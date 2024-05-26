@@ -1,4 +1,5 @@
-﻿using AuthenticationProject.Repository;
+﻿using AuthenticationProject.Helpers;
+using AuthenticationProject.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
@@ -29,8 +30,10 @@ namespace AuthenticationProject
                     builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddTransient<IDbConnection>((sp) => new SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IDbConnection>((sp) => new SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<ILoginRepository, LoginRepository>();
+            services.AddTransient<ISignUpRepository, SignUpRepository>();
+            services.AddTransient<AuthenticationHelper>();
             services.AddControllers();
 
             //Jwt Authentication
@@ -72,7 +75,8 @@ namespace AuthenticationProject
 
             app.UseHttpsRedirection(); // Redirects http to https
             app.UseRouting();
-            app.UseAuthorization();// need to figure out
+            app.UseAuthentication();
+            app.UseAuthorization();
             //app.UseEndpoints(endpoints =>
             //{
             //    endpoints.MapControllerRoute("api", "api/[controller]");

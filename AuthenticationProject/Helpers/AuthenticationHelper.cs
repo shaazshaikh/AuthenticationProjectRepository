@@ -13,7 +13,7 @@ namespace AuthenticationProject.Helpers
         {
             Configuration = configuration;
         }
-        private string GenerateToken(UserLoginModel user)
+        public string GenerateToken(UserLoginModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

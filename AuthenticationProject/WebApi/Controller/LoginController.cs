@@ -1,4 +1,5 @@
-﻿using AuthenticationProject.Repository;
+﻿using AuthenticationProject.Helpers;
+using AuthenticationProject.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,14 @@ namespace AuthenticationProject.WebApi.Controller
     public class LoginController : ControllerBase
     {
         private readonly ILoginRepository _userLoginRepository;
-        public LoginController(ILoginRepository userLoginRepository)
+        private readonly AuthenticationHelper _authenticationHelper;
+        public LoginController(ILoginRepository userLoginRepository, AuthenticationHelper authenticationHelper)
         {
             _userLoginRepository = userLoginRepository;
+            _authenticationHelper = authenticationHelper;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         [Route("authenticateUser")]
         public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginModel model)
@@ -24,8 +27,8 @@ namespace AuthenticationProject.WebApi.Controller
             var user = await _userLoginRepository.AuthenticateUserAsync(model.UserName, model.Password);
             if(user != null)
             {
-                //var token = GenerateToken(user); //Testing purpose 2
-                return Ok();
+                var token = _authenticationHelper.GenerateToken(user); //Testing purpose 2
+                return Ok(token);
             }
 
             return Unauthorized();
