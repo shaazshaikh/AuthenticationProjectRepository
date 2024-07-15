@@ -5,8 +5,6 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationProject", "AuthenticationProject\AuthenticationProject.csproj", "{D66090DB-45BE-4DA4-97D7-2322DF8099E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedModels", "..\SharedModelsProject\SharedModels\SharedModels\SharedModels.csproj", "{F1346072-E9BA-4B4A-9984-00841BED0C7F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{D66090DB-45BE-4DA4-97D7-2322DF8099E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D66090DB-45BE-4DA4-97D7-2322DF8099E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D66090DB-45BE-4DA4-97D7-2322DF8099E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1346072-E9BA-4B4A-9984-00841BED0C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1346072-E9BA-4B4A-9984-00841BED0C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1346072-E9BA-4B4A-9984-00841BED0C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1346072-E9BA-4B4A-9984-00841BED0C7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
