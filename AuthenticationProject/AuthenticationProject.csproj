@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SharedModels">
-      <HintPath>..\..\SharedModelsProject\SharedModels\SharedModels\bin\Debug\net6.0\SharedModels.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\SharedModelsProject\SharedModels\SharedModels\SharedModels.csproj" />
   </ItemGroup>
 
 </Project>
