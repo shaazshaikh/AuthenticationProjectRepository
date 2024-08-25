@@ -1,5 +1,10 @@
-﻿using Dapper;
+﻿using AuthenticationProject.Helpers;
+using Dapper;
+using SharedModels.AuthenticationModels;
 using System.Data;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace AuthenticationProject.Repository
 {
@@ -11,9 +16,11 @@ namespace AuthenticationProject.Repository
     public class SignUpRepository : ISignUpRepository
     {
         private readonly IDbConnection _dbConnection;
-        public SignUpRepository(IDbConnection dbConnection)
+        private readonly AuthenticationHelper _authenticationHelper;
+        public SignUpRepository(IDbConnection dbConnection, AuthenticationHelper authenticationHelper)
         {
             _dbConnection = dbConnection;
+            _authenticationHelper = authenticationHelper;
         }
 
         public async Task<bool> CreateUserAccountAsync(string username, string password)
@@ -26,16 +33,48 @@ namespace AuthenticationProject.Repository
                 return false;
             }
 
-            string insertUser = "insert into Users(id, username, password, uniqueShareId, email,isDeleted,createdDate, modifiedDate) values(NewId(), @username, @password, null,null, 0, getdate(), getdate())";
-
-            await _dbConnection.ExecuteAsync(insertUser, new
+            string insertUser = "insert into Users(id, username, password, uniqueShareId, email,isDeleted,createdDate, modifiedDate) values(@id, @username, @password, null,null, 0, getdate(), getdate())";
+            Guid id = Guid.NewGuid();
+            var rowsAffected = await _dbConnection.ExecuteAsync(insertUser, new
             {
+                id = id,
                 username = username,
                 password
             = password
             });
 
-            return true;
+            if (rowsAffected > 0)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var folderObject = new
+                    {
+                        ParentFolderId = (string)null,
+                        FolderPath = "home"
+                    };
+
+                    var userObject = new UserLoginModel()
+                    {
+                        UserName = username,
+                        Password = password,
+                        Id = id
+                    };
+
+                    var token = _authenticationHelper.GenerateToken(userObject);
+                    string jsonContent = JsonSerializer.Serialize(folderObject);
+                    var payload = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                    string homeFolderCreateUrl = "https://localhost:7082/api/homeFolderCreate/createHomeFolder";
+
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                    HttpResponseMessage response = await httpClient.PostAsync(homeFolderCreateUrl, payload);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }       
         }
     }
 }
