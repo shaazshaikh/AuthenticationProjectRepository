@@ -50,7 +50,8 @@ namespace AuthenticationProject.Repository
                     var folderObject = new
                     {
                         ParentFolderId = (string)null,
-                        FolderPath = "home"
+                        FolderPath = "home",
+                        FolderName = "home"
                     };
 
                     var userObject = new UserLoginModel()
@@ -63,7 +64,7 @@ namespace AuthenticationProject.Repository
                     var token = _authenticationHelper.GenerateToken(userObject);
                     string jsonContent = JsonSerializer.Serialize(folderObject);
                     var payload = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                    string homeFolderCreateUrl = "https://localhost:7082/api/homeFolderCreate/createHomeFolder";
+                    string homeFolderCreateUrl = "https://localhost:7082/api/folder/createFolder";
 
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
