@@ -20,7 +20,7 @@ namespace AuthenticationProject.Helpers
             var claims = new[]
             { new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
               new Claim(ClaimTypes.Name, user.UserName)};
-            var token = new JwtSecurityToken(Configuration["Jwt:Issuer"], Configuration["Jwt:Audience"], claims, signingCredentials:  credentials, expires: DateTime.Now.AddMinutes(20));
+            var token = new JwtSecurityToken(Configuration["Jwt:Issuer"], Configuration["Jwt:Audience"], claims, signingCredentials:  credentials, expires: DateTime.Now.AddMinutes(120));
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
