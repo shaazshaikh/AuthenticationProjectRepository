@@ -22,7 +22,7 @@ namespace AuthenticationProject.WebApi.Controller
             var isCreated = await _userSignUpRepository.CreateUserAccountAsync(model.UserName, model.Password);
             if (isCreated)
             {
-                return StatusCode(StatusCodes.Status201Created, model);
+                return StatusCode(StatusCodes.Status201Created, isCreated);
             }
             else
             {
