@@ -1,7 +1,6 @@
-﻿using AuthenticationProject.Repository;
-using Microsoft.AspNetCore.Http;
+﻿using AuthenticationProject.Models.RequestModels;
+using AuthenticationProject.Repository;
 using Microsoft.AspNetCore.Mvc;
-using SharedModels.AuthenticationModels;
 
 namespace AuthenticationProject.WebApi.Controller
 {
@@ -17,9 +16,9 @@ namespace AuthenticationProject.WebApi.Controller
 
         [HttpPost]
         [Route("signUp")]
-        public async Task<IActionResult> signUpUser([FromBody] UserLoginModel model)
+        public async Task<IActionResult> SignUpUser([FromBody] UserRequestModel model)
         {
-            var isCreated = await _userSignUpRepository.CreateUserAccountAsync(model.UserName, model.Password);
+            var isCreated = await _userSignUpRepository.CreateUserAccountAsync(model);
             if (isCreated)
             {
                 return StatusCode(StatusCodes.Status201Created, isCreated);
