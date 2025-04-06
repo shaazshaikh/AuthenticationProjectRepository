@@ -1,10 +1,7 @@
 ﻿using AuthenticationProject.Helpers;
 using AuthenticationProject.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace AuthenticationProject
 {
@@ -34,6 +31,7 @@ namespace AuthenticationProject
             services.AddTransient<ILoginRepository, LoginRepository>();
             services.AddTransient<ISignUpRepository, SignUpRepository>();
             services.AddTransient<AuthenticationHelper>();
+            services.AddAutoMapper(typeof(AutoMapperMapping));
             services.AddControllers();
 
 

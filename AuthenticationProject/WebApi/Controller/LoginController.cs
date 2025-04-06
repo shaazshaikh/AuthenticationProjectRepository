@@ -1,9 +1,7 @@
 ﻿using AuthenticationProject.Helpers;
+using AuthenticationProject.Models.RequestModels;
 using AuthenticationProject.Repository;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SharedModels.AuthenticationModels;
 
 namespace AuthenticationProject.WebApi.Controller
 {
@@ -22,9 +20,9 @@ namespace AuthenticationProject.WebApi.Controller
         //[AllowAnonymous]
         [HttpPost]
         [Route("authenticateUser")]
-        public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginModel model)
+        public async Task<IActionResult> AuthenticateUser([FromBody] UserRequestModel model)
         {
-            var user = await _userLoginRepository.AuthenticateUserAsync(model.UserName, model.Password);
+            var user = await _userLoginRepository.AuthenticateUserAsync(model);
             if(user != null)
             {
                 var token = _authenticationHelper.GenerateToken(user); //Testing purpose 2

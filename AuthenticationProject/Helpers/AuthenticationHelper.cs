@@ -1,5 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using SharedModels.AuthenticationModels;
+﻿using AuthenticationProject.Models.ResponseModels;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,7 +13,7 @@ namespace AuthenticationProject.Helpers
         {
             Configuration = configuration;
         }
-        public string GenerateToken(UserLoginModel user)
+        public string GenerateToken(UserResponseModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

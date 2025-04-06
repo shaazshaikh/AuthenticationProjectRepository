@@ -1,6 +1,7 @@
 ﻿using AuthenticationProject.Helpers;
+using AuthenticationProject.Models.RequestModels;
+using AuthenticationProject.Models.ResponseModels;
 using Dapper;
-using SharedModels.AuthenticationModels;
 using System.Data;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,7 +11,7 @@ namespace AuthenticationProject.Repository
 {
     public interface ISignUpRepository
     {
-        Task<bool> CreateUserAccountAsync(string username, string password);
+        Task<bool> CreateUserAccountAsync(UserRequestModel model);
     }
 
     public class SignUpRepository : ISignUpRepository
@@ -23,10 +24,10 @@ namespace AuthenticationProject.Repository
             _authenticationHelper = authenticationHelper;
         }
 
-        public async Task<bool> CreateUserAccountAsync(string username, string password)
+        public async Task<bool> CreateUserAccountAsync(UserRequestModel model)
         {
             string checkUser = "select count(1) from Users where username = @username";
-            var existingUser = await _dbConnection.ExecuteScalarAsync<int>(checkUser, new { username = username });
+            var existingUser = await _dbConnection.ExecuteScalarAsync<int>(checkUser, new { username = model.UserName });
 
             if (existingUser > 0)
             {
@@ -38,9 +39,9 @@ namespace AuthenticationProject.Repository
             var rowsAffected = await _dbConnection.ExecuteAsync(insertUser, new
             {
                 id = id,
-                username = username,
+                username = model.UserName,
                 password
-            = password
+            = model.Password
             });
 
             if (rowsAffected > 0)
@@ -54,10 +55,10 @@ namespace AuthenticationProject.Repository
                         FolderName = "home"
                     };
 
-                    var userObject = new UserLoginModel()
+                    var userObject = new UserResponseModel()
                     {
-                        UserName = username,
-                        Password = password,
+                        UserName = model.UserName,
+                        Password = model.Password,
                         Id = id
                     };
 
