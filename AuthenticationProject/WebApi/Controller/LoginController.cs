@@ -25,11 +25,28 @@ namespace AuthenticationProject.WebApi.Controller
             var user = await _userLoginRepository.AuthenticateUserAsync(model);
             if(user != null)
             {
-                var token = _authenticationHelper.GenerateToken(user); //Testing purpose 2
+                var token = await _authenticationHelper.GenerateToken(user);
                 return Ok(token);
             }
 
             return Unauthorized();
+        }
+
+        [HttpPost]
+        [Route("getClientToken")]
+        public async Task<IActionResult> GetClientToken(ClientRequestModel model)
+        {
+            var isCorrectMicroservice = await _authenticationHelper.CheckMicroservice(model);
+            if(isCorrectMicroservice)
+            {
+                var token = await _authenticationHelper.GenerateClientToken(model);
+                return Ok(token);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+            
         }
 
         [HttpGet]
