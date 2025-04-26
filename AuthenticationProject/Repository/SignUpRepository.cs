@@ -62,7 +62,7 @@ namespace AuthenticationProject.Repository
                         Id = id
                     };
 
-                    var token = _authenticationHelper.GenerateToken(userObject);
+                    var token = await _authenticationHelper.GenerateToken(userObject);
                     string jsonContent = JsonSerializer.Serialize(folderObject);
                     var payload = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                     string homeFolderCreateUrl = "https://localhost:7082/api/folder/createFolder";
